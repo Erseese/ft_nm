@@ -1,0 +1,58 @@
+file : a.out de base
+
+nm = display la table de symbole d un fichier object
+
+premiere colonne 
+adresse memoire (valeur du symbole)
+
+
+seconde colonne
+type du symbole
+si majuscule global (externe) si minuscule local
+
+A
+
+B
+b
+
+C
+c
+
+D
+d
+
+G
+g
+
+i
+
+I
+
+N
+
+n
+
+p
+
+R
+r
+
+S
+s
+
+U
+
+u
+
+V
+v
+
+W
+w
+
+-
+
+?
+
+troisieme colonne
+nom
