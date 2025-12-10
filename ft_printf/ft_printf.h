@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include "../libft_modif/libft.h"
 
 int		ft_putchar(char c);
 int		ft_putstr(char *str);
@@ -30,6 +31,11 @@ int		ft_printxc(unsigned int z);
 int		choix_fonct(va_list ptr, const char *d);
 int		ft_printf(const char *d, ...);
 char	*ft_itoa2(long int nb, long int base);
+char    *ft_itoa_base_ul(unsigned long nbr, char *base);
+int     ft_printlX(unsigned long n);
+int     ft_printlx(unsigned long n);
+int     ft_printlu(unsigned long n);
+
 int		ft_taille2(long int nb, long int base);
 
 #endif

@@ -72,3 +72,36 @@ int	ft_printxc(unsigned int l)
 	free(test);
 	return (len);
 }
+
+int ft_printlu(unsigned long n)
+{
+    	char	*d;
+	int		len;
+
+	d = ft_itoa2(n, 10);
+	len = ft_putstr(d);
+	free(d);
+	return (len);
+}
+
+int ft_printlx(unsigned long l)
+{
+    char	*test;
+	int		len;
+
+	test = ft_itoa(l, 16);
+	len = ft_putstr(test);
+	free(test);
+	return (len);
+}
+
+int ft_printlX(unsigned long l)
+{
+    char	*test;
+	int		len;
+
+	test = ft_itoa_maj(l, 16);
+	len = ft_putstr(test);
+	free(test);
+	return (len);
+}

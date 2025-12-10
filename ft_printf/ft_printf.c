@@ -36,6 +36,18 @@ int	choix_fonct(va_list ptr, const char *d)
 		len += ft_printxc(va_arg(ptr, int));
 	else if (*d == '%')
 		len += ft_putchar('%');
+	else if (*d == 'l')
+	{
+    	d++;
+		if (*d == 'u')
+			len += ft_printlu(va_arg(ptr, unsigned long));
+		else if (*d == 'x')
+			len += ft_printlx(va_arg(ptr, unsigned long));
+		else if (*d == 'X')
+			len += ft_printlX(va_arg(ptr, unsigned long));
+		else
+			return (-1);
+	}
 	else
 		return (-1);
 	return (len);
@@ -58,6 +70,10 @@ int	ft_printf(const char *d, ...)
 			if (res == -1)
 				return (0);
 			d += 2;
+			if (*(d - 1) == 'l')
+			{
+				d++;
+			}
 		}
 		else
 		{

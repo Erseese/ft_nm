@@ -116,3 +116,22 @@ char	*ft_itoa2(long int nb, long int base)
 	nb = nb / base;
 	return (res);
 }
+
+
+char    *ft_itoa_base_ul(unsigned long nbr, char *base)
+{
+    char            buffer[65];
+    size_t             base_len = ft_strlen(base);
+    int             i = 64;
+
+    buffer[i] = '\0';
+    if (nbr == 0)
+        buffer[--i] = base[0];
+
+    while (nbr > 0)
+    {
+        buffer[--i] = base[nbr % base_len];
+        nbr /= base_len;
+    }
+    return (ft_strdup(&buffer[i]));
+}
