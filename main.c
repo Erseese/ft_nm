@@ -53,13 +53,13 @@ void    launcher(t_nm *nm)
         exit(1);
     }
     off_t filesize = st.st_size;
+    nm->filesize = filesize;
     map = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, nm->fd, 0);
     nm->map = map;
     if (parse_eident(nm) == 0)
     {
         return ;
     }
-
     if (nm->class == ELF32)
     {
         nm->ehdr.elf32 = (Elf32_Ehdr *) map;
@@ -72,7 +72,7 @@ void    launcher(t_nm *nm)
         nm->shdr.sh64 = (Elf64_Shdr *)(map + nm->ehdr.elf64->e_shoff);
         nm->phdr.ph64 = (Elf64_Phdr *)(map + nm->ehdr.elf64->e_phoff);
     }
-
+    parse_ehdr(nm);
     print_elfehdr(nm);
     /*for (int i = 0; i < nm->elfehdr->e_phnum; i++)
     {

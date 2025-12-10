@@ -49,21 +49,40 @@ int parse_eident(t_nm *nm)
     return 1;
 }
 
+
+
 int parse_ehdr(t_nm *nm)
 {
+    uint64_t totalph = nm_get_e_phoff(nm) + (nm_get_e_phnum(nm) * nm_get_e_phentsize(nm));
+    uint64_t totalsh = nm_get_e_shoff(nm) + (nm_get_e_shnum(nm) * nm_get_e_shentsize(nm));
     if (nm->class == ELF32)
-    {
         nm->ehdr.elf32 = (Elf32_Ehdr *) nm->map;
-        if (nm->ehdr.elf32->e_phoff == 0 && (nm->ehdr.elf32->e_phnum != 0 || nm->ehdr.elf32->e_phentsize != 0))
-            return 0;
-    }
     else if (nm->class == ELF64)
-    {
         nm->ehdr.elf64 = (Elf64_Ehdr *) nm->map;
-        if (nm->ehdr.elf64->e_phoff == 0 && (nm->ehdr.elf64->e_phnum != 0 || nm->ehdr.elf64->e_phentsize != 0))
-            return 0;
-    }
-    if (nm->ehdr.elf32->e_phoff == 0 && (nm->ehdr.elf32->e_phnum != 0 || nm->ehdr.elf32->e_phentsize != 0))
+    //entry
+    if (nm_get_e_entry(nm) + nm_get_e_ehsize(nm) > nm->filesize)
+        return 0;
+    // phoff and shoff
+    if (nm_get_e_phoff(nm) == 0 && (nm_get_e_phnum(nm) != 0 || nm_get_e_phentsize(nm) != 0))
+        return 0;
+    if (nm_get_e_shoff(nm) == 0 && (nm_get_e_shnum(nm) != 0 || nm_get_e_shentsize(nm) != 0))
+        return 0;
+    if (nm_get_e_phoff(nm) > nm_get_e_shoff(nm) && totalph < nm_get_e_shoff(nm))
+        return 0;
+    if (nm_get_e_shoff(nm) > nm_get_e_phoff(nm) && totalsh < nm_get_e_phoff(nm))
+        return 0;
+    if (totalph > nm->filesize)
+        return 0;
+    if (totalsh > nm->filesize)
+        return 0;
+
+    // Vérifier que les offsets ne sortent pas de la map
+    if (nm_get_e_phoff(nm) > nm->filesize || nm_get_e_shoff(nm) > nm->filesize)
+        return 0;
+    
+    // Vérifier que e_shstrndx est valide
+    if (nm_get_e_shstrndx(nm) >= nm_get_e_shnum(nm))
         return 0;
     return 1;
 }
+

@@ -59,6 +59,7 @@ typedef struct s_nm
 	int bits;
     t_hashmap   flags;
     int i;
+	off_t filesize;
 	int *fds;
 	char **filenames;
 	int fd;
@@ -81,7 +82,7 @@ void    print_elfphdr(t_nm *nm);
 void    print_elfshdr(t_nm *nm);
 void    print_elfehdr(t_nm *nm);
 int		parse_eident(t_nm *nm);
-
+int		parse_ehdr(t_nm *nm);
 
 
 /*E hdr accessors*/
@@ -145,6 +146,8 @@ uint64_t nm_get_sh_entsize(t_nm *nm);
 //   Elf64_Half	e_shnum;		/* Section header table entry count */
 //   Elf64_Half	e_shstrndx;		/* Section header string table index */
 // } Elf64_Ehdr;
+
+
 
 // typedef struct
 // {
