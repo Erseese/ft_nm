@@ -5,7 +5,8 @@ RM = rm -rf
 FILE = nm
 OBJDIR = obj
 SRCS = main.c ${FILE}/options/flags.c ${FILE}/print/printhdr.c ${FILE}/parse/parse_ehdr.c ${FILE}/parse/ehdr_accessor.c \
-		${FILE}/parse/phdr_accessor.c ${FILE}/parse/shdr_accessor.c \
+		${FILE}/parse/phdr_accessor.c ${FILE}/parse/shdr_accessor.c ${FILE}/ft_nm.c \
+		
 
 OBJS = $(SRCS:%.c=$(OBJDIR)/%.o)
 LIBFT = libft_modif/libft.a

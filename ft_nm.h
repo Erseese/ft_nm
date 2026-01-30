@@ -85,6 +85,9 @@ int		parse_eident(t_nm *nm);
 int		parse_ehdr(t_nm *nm);
 
 
+int find_str_tbl(t_nm *nm);
+int find_sym_tbl(t_nm *nm);
+
 /*E hdr accessors*/
 
 

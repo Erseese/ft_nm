@@ -53,13 +53,12 @@ int parse_eident(t_nm *nm)
 
 int parse_ehdr(t_nm *nm)
 {
-    uint64_t totalph = nm_get_e_phoff(nm) + (nm_get_e_phnum(nm) * nm_get_e_phentsize(nm));
-    uint64_t totalsh = nm_get_e_shoff(nm) + (nm_get_e_shnum(nm) * nm_get_e_shentsize(nm));
+    
     if (nm->class == ELF32)
         nm->ehdr.elf32 = (Elf32_Ehdr *) nm->map;
     else if (nm->class == ELF64)
         nm->ehdr.elf64 = (Elf64_Ehdr *) nm->map;
-    //entry
+    /*//entry
     if (nm_get_e_entry(nm) + nm_get_e_ehsize(nm) > nm->filesize)
         return 0;
     // phoff and shoff
@@ -82,7 +81,7 @@ int parse_ehdr(t_nm *nm)
     
     // Vérifier que e_shstrndx est valide
     if (nm_get_e_shstrndx(nm) >= nm_get_e_shnum(nm))
-        return 0;
+        return 0;*/
     return 1;
 }
 

@@ -74,6 +74,9 @@ void    launcher(t_nm *nm)
     }
     parse_ehdr(nm);
     print_elfehdr(nm);
+    find_str_tbl(nm);
+    find_sym_tbl(nm);
+    //parse les deux i guess ?
     /*for (int i = 0; i < nm->elfehdr->e_phnum; i++)
     {
         //print_elfphdr(&nm->elfphdr[i]);
