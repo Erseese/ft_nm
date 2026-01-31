@@ -151,3 +151,62 @@ void    print_elfshdr(t_nm *nm)
     nm_get_sh_entsize(nm)
     );
 }
+
+void print_elfshdr64(t_shdr shdr)
+{
+    Elf64_Shdr *sh = shdr.sh64;
+
+    ft_printf(
+        "================ ELF Section Header ================\n"
+        "sh_name        (Section name (string tbl index)    : %u\n"
+        "sh_type        (Section type)                      : %u : %s\n"
+        "sh_flags       (Section flags)                     : %lu\n"
+        "sh_addr        (Section virtual addr at execution) : 0x%lx\n"
+        "sh_offset      (Section file offset)               : 0x%lx\n"
+        "sh_size        (Section size in byte)              : %lu\n"
+        "sh_link        (Link to another section)           : %u\n"
+        "sh_info        (Additional section information)    : %u\n"
+        "sh_addralign   (Section alignment)                 : %lu\n"
+        "sh_entsize     (Entry size if section holds table) : %lu\n\n\n",
+        sh->sh_name,
+        sh->sh_type, sh_type_to_str(sh->sh_type),
+        sh->sh_flags,
+        sh->sh_addr,
+        sh->sh_offset,
+        sh->sh_size,
+        sh->sh_link,
+        sh->sh_info,
+        sh->sh_addralign,
+        sh->sh_entsize
+    );
+}
+
+
+void print_elfshdr32(t_shdr shdr)
+{
+    Elf32_Shdr *sh = shdr.sh32;
+
+    ft_printf(
+        "================ ELF Section Header ================\n"
+        "sh_name        (Section name (string tbl index)    : %u\n"
+        "sh_type        (Section type)                      : %u : %s\n"
+        "sh_flags       (Section flags)                     : %lu\n"
+        "sh_addr        (Section virtual addr at execution) : 0x%lx\n"
+        "sh_offset      (Section file offset)               : 0x%lx\n"
+        "sh_size        (Section size in byte)              : %lu\n"
+        "sh_link        (Link to another section)           : %u\n"
+        "sh_info        (Additional section information)    : %u\n"
+        "sh_addralign   (Section alignment)                 : %lu\n"
+        "sh_entsize     (Entry size if section holds table) : %lu\n\n\n",
+        sh->sh_name,
+        sh->sh_type, sh_type_to_str(sh->sh_type),
+        sh->sh_flags,
+        sh->sh_addr,
+        sh->sh_offset,
+        sh->sh_size,
+        sh->sh_link,
+        sh->sh_info,
+        sh->sh_addralign,
+        sh->sh_entsize
+    );
+}

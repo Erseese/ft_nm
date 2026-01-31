@@ -83,7 +83,8 @@ void    print_elfshdr(t_nm *nm);
 void    print_elfehdr(t_nm *nm);
 int		parse_eident(t_nm *nm);
 int		parse_ehdr(t_nm *nm);
-
+void print_elfshdr64(t_shdr shdr);
+void print_elfshdr32(t_shdr shdr);
 
 int find_str_tbl(t_nm *nm);
 int find_sym_tbl(t_nm *nm);
