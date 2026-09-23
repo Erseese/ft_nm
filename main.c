@@ -43,7 +43,7 @@ int	nm_fill_struct(char **argv, int argc, t_nm *global)
 	return (0);
 }
 
-void    launcher(t_nm *nm)
+int    launcher(t_nm *nm)
 {
     struct stat st;
     void    *map;
@@ -58,7 +58,7 @@ void    launcher(t_nm *nm)
     nm->map = map;
     if (parse_eident(nm) == 0)
     {
-        return ;
+        return 1;
     }
     if (nm->class == ELF32)
     {
@@ -72,8 +72,10 @@ void    launcher(t_nm *nm)
         nm->shdr.sh64 = (Elf64_Shdr *)(map + nm->ehdr.elf64->e_shoff);
         nm->phdr.ph64 = (Elf64_Phdr *)(map + nm->ehdr.elf64->e_phoff);
     }
-    parse_ehdr(nm);
+    if (parse_ehdr(nm) != 1)
+        return 1;
     print_elfehdr(nm);
+    //parse_shdr(nm);
     //find_str_tbl(nm);
     find_sym_tbl(nm);
     //parse les deux i guess ?
@@ -91,16 +93,34 @@ void    launcher(t_nm *nm)
     }*/
     if (munmap(nm->map, filesize) == 0)
     {
-        printf("NOOOON\n");
-        return;
+        printf("oki\n");
+        return 1;
     }
+    return 0;
 }
 
 void    init(char **argv, int argc, t_nm *nm)
 {
+    struct stat st;
     nm_fill_struct(argv, argc, nm);
     for (int i = 0; nm->filenames[i]; i++)
     {
+        if (stat(nm->filenames[i], &st) == -1)
+        {
+            perror("stat");
+            return ;
+        }
+
+        if (S_ISDIR(st.st_mode))
+        {
+            printf("%s est un directory\n", nm->filenames[i]);
+            continue;
+        }
+        else if(!S_ISREG(st.st_mode))
+        {
+            printf("%s est un qutre truc\n", nm->filenames[i]);
+            continue;
+        }
         int fd = open(nm->filenames[i], O_RDONLY);
         if (fd < 0)
         {
@@ -111,7 +131,11 @@ void    init(char **argv, int argc, t_nm *nm)
         nm->fd = fd;
         nm->file = nm->filenames[i];
 
-        launcher(nm);
+        if (launcher(nm) != 1)
+        {
+            printf("wow\n");
+            close(fd);
+        }
 
         close(fd);
     }

@@ -69,7 +69,7 @@ typedef struct s_nm
     t_ehdr ehdr;   // Union of Elf32* and Elf64*
 	t_phdr phdr;
 	t_shdr shdr;
-	t_sym symtbl;
+	t_sym *symtbl;
 } t_nm;
 
 

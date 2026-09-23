@@ -17,7 +17,6 @@ int find_str_tbl(t_nm *nm)
                 nm_get_sh_addr(nm);
                 if (nm->shdr.sh32->sh_addr != 0x0)
                 {
-                    printf("test\n");
                     for (Elf32_Word i = 0; i < nm->shdr.sh32->sh_size; i++)
                     {
                         printf("%c", test[i + nm->shdr.sh64->sh_offset]);
@@ -30,7 +29,6 @@ int find_str_tbl(t_nm *nm)
     {
         for (int i = 0; i < nm->ehdr.elf64->e_shnum; i++)
         {
-            //print_elfshdr(&nm->elfshdr[i]);
             nm->shdr.sh64 = (Elf64_Shdr *)(nm->map + nm->ehdr.elf64->e_shoff + i * nm->ehdr.elf64->e_shentsize);
             if (nm->shdr.sh64->sh_type == SHT_STRTAB)
             {
@@ -39,13 +37,12 @@ int find_str_tbl(t_nm *nm)
                 print_elfshdr(nm);
                 nm_get_sh_addr(nm);
                 Elf64_Word i = 0;
-                printf("test\n");   
                 while (i < nm->shdr.sh64->sh_size)
                 {
-                    printf("%s\n", test + i);
+                    //printf("%s\n", test + i);
                     i += ft_strlen(test + i) + 1;
                 }
-                printf("\n");
+                //printf("\n");
             }
         }
     }
@@ -65,6 +62,7 @@ int find_sym_tbl(t_nm *nm)
             symtbl.sh32 = (Elf32_Shdr *)(nm->map + nm->ehdr.elf32->e_shoff + i * nm->ehdr.elf32->e_shentsize);
             if (symtbl.sh32->sh_type == SHT_SYMTAB)
             {
+                nm->symtbl = &symtbl;
                 print_elfshdr32(symtbl);
                 strtbl.sh32 = (Elf32_Shdr *)(nm->map + nm->ehdr.elf32->e_shoff + symtbl.sh32->sh_link * nm->ehdr.elf32->e_shentsize);
                 Elf32_Word j = 0;
