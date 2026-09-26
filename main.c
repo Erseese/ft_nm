@@ -5,7 +5,7 @@ void    print_help()
     ft_printf("help : \nFunction Usage: nm [option(s)] [file(s)]\n\
 List symbols in [file(s)] (a.out by default).\n The options are:\n\
 -h, --help        Display this information\n\
-nm: supported targets : elfx86_32, elfx64, object files, .so\n\
+ft_nm: supported targets : elfx86_32, elfx64, object files, .so\n\
 report bugs to : moi lol");
 }
 
@@ -58,40 +58,61 @@ int    launcher(t_nm *nm)
     nm->map = map;
     if (parse_eident(nm) == 0)
     {
+        if (munmap(nm->map, filesize) < 0)
+        {
+            printf("oki\n");
+            return 1;
+        }
+        return 1;
+    }
+    
+    if (nm->class == ELF32)
+    {
+        nm->ehdr.elf32 = (Elf32_Ehdr *) map;
+    }
+    else
+    {
+        nm->ehdr.elf64 = (Elf64_Ehdr *) map;
+    }
+    if (parse_ehdr(nm) != 1)
+    {
+        if (munmap(nm->map, filesize) < 0)
+        {
+            printf("oki\n");
+            return 1;
+        }
         return 1;
     }
     if (nm->class == ELF32)
     {
-        nm->ehdr.elf32 = (Elf32_Ehdr *) map;
         nm->shdr.sh32 = (Elf32_Shdr *)(map + nm->ehdr.elf32->e_shoff);
         nm->phdr.ph32 = (Elf32_Phdr *)(map + nm->ehdr.elf32->e_phoff);
     }
     else
     {
-        nm->ehdr.elf64 = (Elf64_Ehdr *) map;
         nm->shdr.sh64 = (Elf64_Shdr *)(map + nm->ehdr.elf64->e_shoff);
         nm->phdr.ph64 = (Elf64_Phdr *)(map + nm->ehdr.elf64->e_phoff);
     }
-    if (parse_ehdr(nm) != 1)
-        return 1;
-    print_elfehdr(nm);
-    //parse_shdr(nm);
-    //find_str_tbl(nm);
     find_sym_tbl(nm);
-    //parse les deux i guess ?
-    /*for (int i = 0; i < nm->elfehdr->e_phnum; i++)
+    t_sct_values *list;
+    list = nm->sectiondata;
+    if (!list)
+        printf("ft_nm: %s: no symbols\n",nm->file);
+    while (list)
     {
-        //print_elfphdr(&nm->elfphdr[i]);
-        Elf64_Phdr *phdr = (Elf64_Phdr *)(nm->map + nm->elfehdr->e_phoff + i * nm->elfehdr->e_phentsize);
-        print_elfphdr(phdr);
+        if (list->st_name == 0)
+        {
+            list = list->next;
+            continue;
+        }
+        if (list->st_value == 0 && (list->symbol_type == 'U' || list->symbol_type == 'w'))
+            printf("                ");
+        else
+            printf("%016lx", list->st_value);
+        printf(" %c %s\n", list->symbol_type, list->name);
+        list = list->next;
     }
-    for (int i = 0; i < nm->elfehdr->e_shnum; i++)
-    {
-        //print_elfshdr(&nm->elfshdr[i]);
-        Elf64_Shdr *shdr = (Elf64_Shdr *)(nm->map + nm->elfehdr->e_shoff + i * nm->elfehdr->e_shentsize);
-        print_elfshdr(shdr);
-    }*/
-    if (munmap(nm->map, filesize) == 0)
+    if (munmap(nm->map, filesize) < 0)
     {
         printf("oki\n");
         return 1;
@@ -102,6 +123,7 @@ int    launcher(t_nm *nm)
 void    init(char **argv, int argc, t_nm *nm)
 {
     struct stat st;
+    nm->sectiondata = NULL;
     nm_fill_struct(argv, argc, nm);
     for (int i = 0; nm->filenames[i]; i++)
     {
@@ -131,12 +153,11 @@ void    init(char **argv, int argc, t_nm *nm)
         nm->fd = fd;
         nm->file = nm->filenames[i];
 
-        if (launcher(nm) != 1)
+        if (launcher(nm) != 0)
         {
-            printf("wow\n");
+            printf("erreur?\n");
             close(fd);
         }
-
         close(fd);
     }
 }

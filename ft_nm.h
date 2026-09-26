@@ -54,6 +54,17 @@ typedef union u_sym {
 } t_sym;
 
 
+typedef struct s_sct_values
+{
+	uint32_t	st_name;
+	uint64_t	st_value;
+	char		symbol_type;
+	char		*name;
+	struct s_sct_values *next;
+} t_sct_values;
+
+
+
 typedef struct s_nm
 {
 	int bits;
@@ -70,6 +81,7 @@ typedef struct s_nm
 	t_phdr phdr;
 	t_shdr shdr;
 	t_sym *symtbl;
+	t_sct_values *sectiondata;
 } t_nm;
 
 

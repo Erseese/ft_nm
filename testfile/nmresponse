@@ -1,0 +1,49 @@
+
+ft_itoa.o:
+                 U __stack_chk_fail
+0000000000000049 T ft_itoa
+0000000000000280 T ft_itoa2
+0000000000000375 T ft_itoa_base_ul
+000000000000013c T ft_itoa_maj
+                 U ft_strdup
+                 U ft_strlen
+0000000000000000 T ft_taille
+000000000000022e T ft_taille2
+                 U malloc
+
+ft_print.o:
+                 U free
+                 U ft_itoa
+                 U ft_itoa2
+                 U ft_itoa_maj
+0000000000000088 T ft_printd
+0000000000000220 T ft_printlX
+0000000000000196 T ft_printlu
+00000000000001db T ft_printlx
+0000000000000000 T ft_printp
+00000000000000cd T ft_printu
+0000000000000110 T ft_printx
+0000000000000153 T ft_printxc
+                 U ft_putstr
+                 U write
+
+ft_putchar.o:
+0000000000000000 T ft_putchar
+000000000000002e T ft_putstr
+                 U write
+
+ft_printf.o:
+                 U __stack_chk_fail
+0000000000000000 T choix_fonct
+                 U ft_printd
+0000000000000480 T ft_printf
+                 U ft_printlX
+                 U ft_printlu
+                 U ft_printlx
+                 U ft_printp
+                 U ft_printu
+                 U ft_printx
+                 U ft_printxc
+                 U ft_putchar
+                 U ft_putstr
+                 U write
